@@ -1,0 +1,28 @@
+{
+  "name": "mini_project",
+  "version": "1.0.0",
+  "description": "My mini software",
+  "type": "module",
+  "keywords": [
+    "frontend",
+    "backend",
+    "database"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "backend"
+  },
+  "license": "ISC",
+  "author": "prodipta nayeb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "dependencies": {
+    "prettier": "^3.9.6"
+  }
+}
