@@ -1,1 +1,1 @@
-export const DB_NAME= "mini_project";
+export const DB_NAME= "software";
