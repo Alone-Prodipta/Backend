@@ -1,11 +1,7 @@
-import {asynchandler} from "../utils/asynchandler.js";
+import {asynchandler} from "../utilities/asynchandler.js";
 const registerUser= asynchandler (async (req, res)=>{
     res.status(200).json({
-        message: "ok",
+        message: "Hey! whats up?",
     })
 })
-
-
-
-
 export default registerUser;
