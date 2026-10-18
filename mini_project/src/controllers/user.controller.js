@@ -1,8 +1,8 @@
 import { asynchandler } from "../utilities/asynchandler.js";
 import { apierror } from "../utilities/apierror.js";
 import { user } from "../models/user.models.js";
-import { apiResponse } from "../utilities/apierror.js";
-import { uploadOnCloudinary } from "../utilities/cloudinary.js";
+import { apiResponse } from "../utilities/apiresponse.js";
+import  uploadOnCloudinary  from "../utilities/cloudinary.js";
 const registerUser = asynchandler(async (req, res) => {
   // res.status(200).json({
   //     message: "Hey! whats up?",
@@ -48,17 +48,17 @@ const registerUser = asynchandler(async (req, res) => {
     $or: [{ username }, { email }],
   });
   if (exitedUser) {
-    throw new apierror("409", "user already exist");
+    throw new apierror(409, "user already exist");
   }
   const avatarLocalPath = req.files?.avatar[0]?.path;
   const coverimageLocalPath = req.files?.coverImage[0]?.path;
   if (!avatarLocalPath) {
-    throw new apierror("400", "Avatar file is required");
+    throw new apierror(400, "Avatar file is required");
   }
   const avatar = await uploadOnCloudinary(avatarLocalPath);
   const coverimage = await uploadOnCloudinary(coverimageLocalPath);
   if (!avatarLocalPath) {
-    throw new apierror("400", "Avatar file is required");
+    throw new apierror(400, "Avatar file is required");
   }
   const user= await user.create({
     fullname,
@@ -66,7 +66,7 @@ const registerUser = asynchandler(async (req, res) => {
     coverImage: coverimage?.url || "",
     email,
     password,
-    username: username.tolowercase(),
+    username: username.toLowerCase(),
   });
   const createdUser= await user.findById(user._id).select("-password -refreshToken");     //fields which we dont want
   if(!createdUser)

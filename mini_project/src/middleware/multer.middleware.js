@@ -1,5 +1,4 @@
 import multer from "multer";
-import crypto from "crypto";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -9,4 +8,4 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
-const upload = multer({ storage });
+export const upload = multer({ storage });
