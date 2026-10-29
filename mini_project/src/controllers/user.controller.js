@@ -27,7 +27,7 @@ const registerUser = asynchandler(async (req, res) => {
   console.log("fullname: ", fullname);
   console.log("username: ", username);
   console.log("password: ", password);
-
+let CoverImageLocalPath;
   //Aproach 1:
   /* if(fullname === "")
     {
@@ -50,17 +50,17 @@ const registerUser = asynchandler(async (req, res) => {
   if (exitedUser) {
     throw new apierror(409, "user already exist");
   }
-  const avatarLocalPath = req.files?.avatar[0]?.path;
-  const coverimageLocalPath = req.files?.coverImage[0]?.path;
+  const avatarLocalPath = req.files?.avatar[0]?.path||"";
+  const coverimageLocalPath = req.files?.coverImage[0]?.path||"";
+  if(req.files && Array.isArray(req.files.avatar) && req.files.avatar.length > 0) {
+    CoverImageLocalPath = req.files.coverImage[0].path;
+  }
   if (!avatarLocalPath) {
     throw new apierror(400, "Avatar file is required");
   }
   const avatar = await uploadOnCloudinary(avatarLocalPath);
   const coverimage = await uploadOnCloudinary(coverimageLocalPath);
-  if (!avatarLocalPath) {
-    throw new apierror(400, "Avatar file is required");
-  }
-  const user= await user.create({
+  const newuser= await user.create({
     fullname,
     avatar: avatar.url,
     coverImage: coverimage?.url || "",
@@ -68,7 +68,7 @@ const registerUser = asynchandler(async (req, res) => {
     password,
     username: username.toLowerCase(),
   });
-  const createdUser= await user.findById(user._id).select("-password -refreshToken");     //fields which we dont want
+  const createdUser= await user.findById(newuser._id).select("-password -refreshToken");     //fields which we dont want
   if(!createdUser)
   {
     throw new apierror(500,"error in registering the user");

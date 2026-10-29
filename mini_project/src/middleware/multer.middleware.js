@@ -1,5 +1,6 @@
 import multer from "multer";
-
+import express from "express";
+const app = express();
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./public/temp");
@@ -8,4 +9,7 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 export const upload = multer({ storage });
