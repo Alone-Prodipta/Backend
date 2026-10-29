@@ -1,0 +1,21 @@
+{
+  "name": "project_1",
+  "version": "1.0.0",
+  "description": "practise project",
+  "keywords": [
+    "prodipta",
+    "practise"
+  ],
+  "license": "ISC",
+  "author": "Prodipta Nayeb",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "ejs": "^7.0.2",
+    "express": "^5.3.0",
+    "nodemon": "^3.1.14"
+  }
+}
