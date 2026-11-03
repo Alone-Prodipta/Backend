@@ -3,31 +3,46 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import process from "node:process";
+
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-process.loadEnvFile(path.join(__dirname, ".env"));
-const port = process.env.PORT;
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-const filesDir = path.join(__dirname, 'files');
-app.use(express.static(path.join(__dirname, "public")));
-app.set('view engine','ejs');
 
-const envPath = path.join(import.meta.dirname || '.', '.env');
+
+const envPath = path.join(__dirname, ".env");
 if (fs.existsSync(envPath)) {
     process.loadEnvFile(envPath);
 }
+
+const port = process.env.PORT;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+const filesDir = path.join(__dirname, 'files');
+if (!fs.existsSync(filesDir)) {
+    fs.mkdirSync(filesDir, { recursive: true });
+}
+
+app.use(express.static(path.join(__dirname, "public")));
+app.set('view engine', 'ejs');
+
 app.get('/', (req, res) => {
   fs.readdir(filesDir, (err, file) => {
     res.render('index', {
       files: err ? [] : file
     });
   });
-  
 });
-app.post('/create',function(req,res){
-  fs.appendFile(path.join(__dirname, 'files', req.body.title + '.txt'), req.body.details, (err) => {
+
+app.post('/create', function(req, res) {
+  const title = req.body.title ? req.body.title.trim() : '';
+  if (!title) {
+    return res.status(400).send('Task title is required');
+  }
+  
+  fs.appendFile(path.join(filesDir, title + '.txt'), req.body.details || '', (err) => {
     if (err) {
       console.error(err);
       res.status(500).send('Error creating task');
@@ -37,7 +52,7 @@ app.post('/create',function(req,res){
   });
 });
 
-app.get('/files/:filename',function(req, res){
+app.get('/files/:filename', function(req, res) {
   const filename = req.params.filename;
   if (path.basename(filename) !== filename || path.extname(filename) !== '.txt') {
     return res.status(400).send('Invalid file name');
@@ -141,5 +156,5 @@ app.post('/files/:filename/delete', async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`App listening on port ${port}`);
-})
+  console.log("Server is running successfully");
+});
