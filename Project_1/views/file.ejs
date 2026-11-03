@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= filename %></title>
+    <style>
+        body {
+            background-color: #1a202c;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 24px;
+        }
+        textarea {
+            box-sizing: border-box;
+            background-color: #2d3748;
+            border: none;
+            color: white;
+            font-size: 16px;
+            min-height: 60vh;
+            padding: 10px;
+            width: 100%;
+        }
+        button {
+            margin-top: 12px;
+            display: inline-block;
+            background-color: #4a5568;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1><%= filename %></h1>
+    <button onclick="window.location.href = '/';">Back to tasks</button>
+    <% if (saved) { %>
+        <p role="status">Saved successfully.</p>
+    <% } %>
+    <br>
+    <form method="POST" action="/files/<%= encodeURIComponent(filename) %>">
+        <textarea name="content" aria-label="File content"><%= content %></textarea>
+        <br>
+        <button type="submit">Save changes</button>
+    </form>
+</body>
+</html>
