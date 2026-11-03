@@ -76,6 +76,21 @@ app.post('/files/:filename', async (req, res) => {
   }
 });
 
+app.post('/files/:filename/delete', async (req, res) => {
+  const filename = req.params.filename;
+  if (path.basename(filename) !== filename || path.extname(filename) !== '.txt') {
+    return res.status(400).send('Invalid file name');
+  }
+
+  try {
+    await fs.promises.unlink(path.join(filesDir, filename));
+    res.redirect('/');
+  } catch (err) {
+    console.error(err);
+    res.status(err.code === 'ENOENT' ? 404 : 500).send('Error deleting task');
+  }
+});
+
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 })
