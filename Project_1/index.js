@@ -14,6 +14,10 @@ const filesDir = path.join(__dirname, 'files');
 app.use(express.static(path.join(__dirname, "public")));
 app.set('view engine','ejs');
 
+const envPath = path.join(import.meta.dirname || '.', '.env');
+if (fs.existsSync(envPath)) {
+    process.loadEnvFile(envPath);
+}
 app.get('/', (req, res) => {
   fs.readdir(filesDir, (err, file) => {
     res.render('index', {
