@@ -11,6 +11,13 @@
             font-family: Arial, sans-serif;
             margin: 24px;
         }
+        #new-title {
+            background-color: #2d3748;
+            border: solid 5px #4a5568;
+            color: white;
+            font-size: 16px;
+            padding: 8px;
+        }
         textarea {
             box-sizing: border-box;
             background-color: #2d3748;
@@ -21,7 +28,7 @@
             padding: 10px;
             width: 100%;
         }
-        textarea:focus {
+        textarea,#new-title:focus {
             outline: none;
             border: 2px solid #4a5568;
         }
@@ -40,7 +47,14 @@
 </head>
 <body>
     <h1><%= filename %></h1>
+    <form method="POST" action="/files/<%= encodeURIComponent(filename) %>/rename">
+        <input type="hidden" name="returnTo" value="detail" >
+        <label for="new-title">Rename file</label>
+        <input id="new-title" type="text" name="newTitle" value="<%= filename.slice(0, -4) %>" style="height: 30px; width:100px;background-color: #1a202c; border: none; color: white;" required>
+        <button type="submit">Rename</button>
+    </form>
     <button onclick="window.location.href = '/';">Back to tasks</button>
+
     <% if (saved) { %>
         <p role="status">Saved successfully.</p>
     <% } %>

@@ -76,6 +76,49 @@ app.post('/files/:filename', async (req, res) => {
   }
 });
 
+app.post('/files/:filename/rename', async (req, res) => {
+  const filename = req.params.filename;
+  const newTitle = typeof req.body.newTitle === 'string' ? req.body.newTitle.trim() : '';
+  if (path.basename(filename) !== filename || path.extname(filename) !== '.txt') {
+    return res.status(400).send('Invalid file name');
+  }
+  if (
+    !newTitle ||
+    newTitle === '.' ||
+    newTitle === '..' ||
+    /[<>:"/\\|?*\x00-\x1f]/.test(newTitle) ||
+    newTitle.endsWith('.') ||
+    /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\.|$)/i.test(newTitle)
+  ) {
+    return res.status(400).send('Invalid new file name');
+  }
+
+  const newFilename = `${newTitle}.txt`;
+  const currentPath = path.join(filesDir, filename);
+  const newPath = path.join(filesDir, newFilename);
+  try {
+    await fs.promises.access(currentPath);
+    if (filename.toLowerCase() !== newFilename.toLowerCase()) {
+      try {
+        await fs.promises.access(newPath);
+        return res.status(409).send('A file with that name already exists');
+      } catch (err) {
+        if (err.code !== 'ENOENT') {
+          throw err;
+        }
+      }
+    }
+    await fs.promises.rename(currentPath, newPath);
+    if (req.body.returnTo === 'detail') {
+      return res.redirect(`/files/${encodeURIComponent(newFilename)}`);
+    }
+    res.redirect('/');
+  } catch (err) {
+    console.error(err);
+    res.status(err.code === 'ENOENT' ? 404 : 500).send('Error renaming file');
+  }
+});
+
 app.post('/files/:filename/delete', async (req, res) => {
   const filename = req.params.filename;
   if (path.basename(filename) !== filename || path.extname(filename) !== '.txt') {

@@ -27,6 +27,13 @@
                     <div class="task w-72 px-3 py-4 rounded-md bg-zinc-800">
                         <h1 class="text-white text-3xl tracking-tighter"><%= val %></h1>
                         <a class="text-blue-500 inline-block mt-3" href="/files/<%= encodeURIComponent(val) %>">Read more</a>
+                        <form method="POST" action="/files/<%= encodeURIComponent(val) %>/rename">
+                            <label class="text-white block mt-3" for="rename-<%= encodeURIComponent(val) %>">Rename task</label>
+                            <input id="rename-<%= encodeURIComponent(val) %>" class="form-control mt-1"
+                                type="text" name="newTitle" value="<%= val.slice(0, -4) %>"
+                                aria-label="New name for <%= val %>" required>
+                            <button class="btn btn-secondary btn-sm mt-2" type="submit">Rename</button>
+                        </form>
                         <form method="POST" action="/files/<%= encodeURIComponent(val) %>/delete"
                             onsubmit="return confirm('Delete this task? This cannot be undone.');">
                             <button class="btn btn-danger btn-sm mt-3" type="submit">Delete</button>
