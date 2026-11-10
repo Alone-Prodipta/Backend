@@ -1,53 +1,62 @@
 import express from "express";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
-import User from "./user.model.js";
+import User from "./models/user.model.js";
+import path from "path";
+import process from "node:process";
 
 dotenv.config();
-const app = express();
-const port = process.env.PORT;
 
+const app = express();
+
+const __dirname = path.resolve();
+
+app.use(express.static(path.join(__dirname, "public")));
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.render("index");
 });
 
-app.get("/create", async (req, res) => {
-  //it is an asynchronous operation,
-  /* so we need to use await to wait for the 
-    operation to complete before sending the response*/
+app.post("/create", async (req, res) => {
+  const { username, email, image_url } = req.body;
+  await User.create({ username, email, image_url });
+  res.redirect("/read");
+});
 
-  const users = await User.create({
-    name: "Prodipta Nayeb",
-    username: "prodipta",
-    email: "pna@gmail.com",
+app.get("/edit/:_id", async (req, res) => {
+  const updatedUser = await User.findById(req.params._id);
+
+  if (!updatedUser) {
+    return res.redirect("/read");
+  }
+
+  res.render("edit", { updatedUser });
+});
+
+app.post("/edit/:_id", async (req, res) => {
+  const { username, email, image_url } = req.body;
+
+  await User.findByIdAndUpdate(req.params._id, {
+    username,
+    email,
+    image_url,
   });
-  res.send(users);
+
+  res.redirect("/read");
 });
 
-app.get("/update", async (req, res) => {
-  const updatedUser = await User.findOneAndUpdate(
-    { username: "prodipta" },
-    { 
-      name: "Aheri halder" , 
-      email: "aheri@gmail.com"
-    },
-    { new: true },
-  );
-
-  res.send(updatedUser);
+app.get("/read", async (req, res) => {
+  const users = await User.find();
+  res.render("read", { users });
 });
 
-app.get("/read", async(req,res)=>{
-    const readusers = await User.find();
-    res.send(readusers); 
+app.get("/delete/:id", async (req, res) => {
+  const deleteUser = await User.findOneAndDelete({ _id: req.params.id });
+  res.redirect("/read");
 });
-
-app.get("/delete", async(req,res)=>{
-  const deleteUser= await User.findOneAndDelete({username:"prodipta"});
-  res.send(deleteUser);
-})
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
