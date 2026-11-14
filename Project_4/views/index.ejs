@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#111111">
+    <title>Create account</title>
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="min-h-screen min-w-[320px] bg-[#111111] font-sans text-[#f2f2f2] antialiased">
+    <main class="mx-auto grid min-h-screen w-[min(1120px,calc(100%-40px))] grid-cols-1 items-center gap-8 py-7 md:w-[min(1120px,calc(100%-64px))] md:grid-cols-[minmax(0,1fr)_minmax(360px,0.84fr)] md:gap-[clamp(48px,9vw,128px)] md:py-0">
+        <section class="flex flex-col justify-between gap-10 md:min-h-[580px] md:py-12" aria-labelledby="page-title">
+            <a class="inline-flex w-fit items-center gap-[11px] text-[19px] font-bold tracking-[-0.04em] text-[#f3f5fb] no-underline" href="/" aria-label="Form home">
+                <span class="grid size-[34px] place-items-center rounded-[9px] border border-[#444444] bg-[#1a1a1a] text-[17px] text-[#f2f2f2]" aria-hidden="true">F</span>
+                <span>Form<span class="text-[#999999]">.</span></span>
+            </a>
+
+            <div>
+                <p class="mb-[18px] text-[10px] font-bold tracking-[0.16em] text-[#999999]">AUTHENTICATION · AUTHORIZATION · ACCOUNTING</p>
+                <h1 id="page-title" class="m-0 text-[clamp(40px,5vw,62px)] font-semibold leading-[1.08] tracking-[-0.055em]">Build the foundation<br>of secure access.</h1>
+                <p class="mt-[22px] max-w-[390px] text-[15px] leading-[1.7] text-[#9ba3b7]">A simple place to start learning how identity and access work on the backend.</p>
+            </div>
+
+            <p class="hidden items-center gap-[10px] text-xs text-[#888888] md:flex"><span class="size-[7px] rounded-full bg-[#888888]" aria-hidden="true"></span> Your learning journey starts here</p>
+        </section>
+
+        <section class="rounded-[12px] border border-[#333333] bg-[#171717] p-6 sm:p-[42px]" aria-labelledby="form-title">
+            <div class="mb-[30px]">
+                <p class="mb-[10px] text-[10px] font-bold tracking-[0.16em] text-[#999999]">GET STARTED</p>
+                <h2 id="form-title" class="m-0 text-[25px] font-semibold tracking-[-0.04em]">Create your account</h2>
+                <p class="mt-[9px] text-[13px] text-[#999999]">Enter your details to get started.</p>
+            </div>
+
+            <form class="grid gap-5" action="/create" method="post">
+                <div class="grid gap-[9px]">
+                    <label class="text-xs font-semibold text-[#dddddd]" for="username">Username</label>
+                    <input class="h-[46px] w-full rounded-[7px] border border-[#383838] bg-[#111111] px-[14px] text-[13px] text-[#f2f2f2] outline-none transition placeholder:text-[#777777] focus:border-[#aaaaaa] focus:ring-2 focus:ring-white/10" id="username" name="username" type="text" autocomplete="username" placeholder="Choose a username" required>
+                </div>
+
+                <div class="grid gap-[9px]">
+                    <label class="text-xs font-semibold text-[#dddddd]" for="email">Email address</label>
+                    <input class="h-[46px] w-full rounded-[7px] border border-[#383838] bg-[#111111] px-[14px] text-[13px] text-[#f2f2f2] outline-none transition placeholder:text-[#777777] focus:border-[#aaaaaa] focus:ring-2 focus:ring-white/10" id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+                </div>
+
+                <div class="grid gap-[9px]">
+                    <label class="text-xs font-semibold text-[#dddddd]" for="age">Age</label>
+                    <input class="h-[46px] w-full rounded-[7px] border border-[#383838] bg-[#111111] px-[14px] text-[13px] text-[#f2f2f2] outline-none transition placeholder:text-[#777777] focus:border-[#aaaaaa] focus:ring-2 focus:ring-white/10" id="age" name="age" type="number" autocomplete="age" placeholder="Enter your age" required>
+                </div>
+
+                <div class="grid gap-[9px]">
+                    <label class="text-xs font-semibold text-[#dddddd]" for="password">Password</label>
+                    <input class="h-[46px] w-full rounded-[7px] border border-[#383838] bg-[#111111] px-[14px] text-[13px] text-[#f2f2f2] outline-none transition placeholder:text-[#777777] focus:border-[#aaaaaa] focus:ring-2 focus:ring-white/10" id="password" name="password" type="password" autocomplete="new-password" placeholder="Create a password" minlength="8" required>
+                    <span class="-mt-[3px] text-[11px] text-[#888888]">Use at least 8 characters.</span>
+                </div>
+
+                <button class="mt-[5px] flex h-12 items-center justify-center gap-[9px] rounded-[7px] bg-[#e5e5e5] text-[13px] font-bold text-[#111111] transition hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#aaaaaa]" type="submit">Create account <span aria-hidden="true">→</span></button>
+            </form>
+
+            <p class="mt-[22px] text-center text-[11px] leading-[1.6] text-[#888888]">This form is ready to connect to your registration route.</p>
+        </section>
+    </main>
+</body>
+</html>
