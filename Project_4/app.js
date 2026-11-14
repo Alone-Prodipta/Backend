@@ -35,14 +35,9 @@ app.post("/create", (req, res) => {
         password: hash,
         age,
       });
-      const jwt= jwt.sign({email},"secret");
-      res.cookie("token",token);
-      res.send({
-        username: user.username,
-        email: user.email,
-        password: user.password,
-        age: user.age,
-      });
+      const val= jwt.sign({email},"secret");
+      res.cookie("token",val);
+      return res.render("index", { registrationSuccess: true });
     });
   });
 });
@@ -51,9 +46,26 @@ app.post("/logout",(req,res)=>{
 res.cookie("token","");
 })
 
-app.get("/login",(req,res)=>{
+app.get("/login", (req, res) => {
   res.render("login");
-})
+});
+
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).send("Email and password are required");
+  }
+
+  const user = await User.findOne({ email });
+
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.send("Something went wrong");
+  }
+
+  const token = jwt.sign({ email }, "secret");
+  res.cookie("token", token);
+  return res.send("Login successful");
+});
 app.listen(port, function () {
   console.log(`Server is running on port ${port}`);
 });

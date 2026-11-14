@@ -60,5 +60,8 @@
             <p class="mt-[22px] text-center text-[11px] leading-[1.6] text-[#888888]">This form is ready to connect to your registration route.</p>
         </section>
     </main>
+    <% if (typeof registrationSuccess !== "undefined" && registrationSuccess) { %>
+        <script>alert("Registration successful");</script>
+    <% } %>
 </body>
 </html>
